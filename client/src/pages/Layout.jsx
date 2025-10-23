@@ -1,10 +1,10 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Navbar from '../components/home/Navbar'
+import Navbar from '../components/Navbar'
 
 const Layout = () => {
   return (
-    <div>Layout
+    <div>
       <div className='min-h-screen bg-gray-50'> 
 
         <Navbar/>
