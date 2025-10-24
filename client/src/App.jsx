@@ -1,7 +1,7 @@
 import Home from "./pages/Home";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import ResumeBulider from "./pages/ResumeBilder";
+import ResumeBulider from "./pages/ResumeBuilder";
 import Layout from "./pages/Layout";
 import Dashboard from "./pages/Dashboard";
 import Preview from "./pages/Preview";
