@@ -16,6 +16,8 @@ import PersonalInfoForm from "../components/PersonalInfoForm";
 import ResumePreview from "../components/ResumePreview";
 import TemplateSelector from "../components/TemplateSelector";
 import ColorPicker from "../components/colorPicker";
+import ProfessionalSummaryForm from "../components/ProfessionalSummaryForm";
+import ExperienceForm from "../components/ExperienceForm";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams();
@@ -153,23 +155,10 @@ const ResumeBuilder = () => {
               )}
 
               {activeSection.id === "summary" && (
-                <div>
-                  <h3 className="text-gray-800 font-semibold mb-2">
-                    Professional Summary
-                  </h3>
-                  <textarea
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    rows={5}
-                    placeholder="Write a brief professional summary..."
-                    value={resumeData.professional_summary}
-                    onChange={(e) =>
-                      setResumeData((prev) => ({
-                        ...prev,
-                        professional_summary: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
+                <ProfessionalSummaryForm data={resumeData.professional_summary} onChange={(data)=>setResumeData(prev=>({...prev,professional_summary:data}))} setResumeData={setResumeData}/>
+              )}
+              {activeSection.id === "experience" && (
+                <ExperienceForm data={resumeData.experience} onChange={(data)=>setResumeData(prev=>({...prev,experience:data}))}/>
               )}
             </div>
           </div>
