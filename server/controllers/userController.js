@@ -1,6 +1,7 @@
 import User from "../models/users.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Resume from "../models/Resume.js";
 
 // Generate token
 const generateToken = (userId) => {
@@ -38,14 +39,15 @@ export const registerUser = async (req, res) => {
   }
 };
 
-
 // Login User
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required!" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required!" });
     }
 
     const user = await User.findOne({ email });
@@ -87,3 +89,25 @@ export const getUserById = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+//Controller for getting user resume
+//get: /api/user/resumes
+
+export const getUserResumes= async (req,res)=>{
+  try {
+    const userId=req.userId;
+
+    //return user resume
+    const resume=await Resume.find({userId});
+    return res.status(200).json({
+      success:true,
+      resume
+    })
+    
+  } catch (error) {
+    return res.status(400).json({
+      message:error.message  
+    })
+    
+  }
+}
