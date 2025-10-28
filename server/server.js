@@ -5,7 +5,7 @@ import connectDB from "./config/db.js";
 import userRouter from "./routes/userRoutes.js"
 import resumeRouter from "./routes/resumeRouter.js";
 import aiRouter from "./routes/aiRouter.js";
-import Imagekit from "./config/Imagekit.js"; 
+
 // Load environment variables
 dotenv.config();
 

@@ -1,10 +1,7 @@
 //controller for enhancing a resume's professional summary
 //POST :/api/ai/enhance-pro-sum
 
-import OpenAI from "openai";
-const openai = new OpenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+import openai from "../config/ai.js";
 
 export const enhanceProfessionalSummary = async (req, res) => {
   try {
