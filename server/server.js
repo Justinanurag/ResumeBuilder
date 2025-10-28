@@ -3,6 +3,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/userRoutes.js"
+import resumeRouter from "./routes/resumeRouter.js";
+import aiRouter from "./routes/aiRouter.js";
+import Imagekit from "./config/Imagekit.js"; 
 // Load environment variables
 dotenv.config();
 
@@ -28,7 +31,9 @@ app.get("/", (req, res) => {
   res.send("🚀 Server is live and running...");
 });
  
-app.use('/api/users',userRouter)
+app.use('/api/users',userRouter);
+app.use('/api/resume',resumeRouter);
+app.use('/api/ai',aiRouter);
 
 app.listen(PORT, () => {
   console.log(`🌐 Server is running on port ${PORT}`);
