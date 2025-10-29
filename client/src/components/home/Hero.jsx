@@ -40,13 +40,13 @@ const Hero = () => {
 
           <div className="flex gap-2">
             <Link
-              to="/to/app?state=register"
+              to="/app?state=register"
               className="hidden md:block px-6 py-2 bg-green-500 hover:bg-green-700 active:scale-95 transition-all rounded-full text-white"
             >
               Get started
             </Link>
             <Link
-              to="/to/app?state=login "
+              to="/app?state=login"
               className="hidden md:block px-6 py-2 border active:scale-95 hover:bg-slate-50 transition-all rounded-full text-slate-700 hover:text-slate-900"
             >
               Login
@@ -174,7 +174,7 @@ const Hero = () => {
           {/* CTA Buttons */}
           <div className="flex items-center gap-4 ">
             <Link
-             to="/to/app"
+             to="/app"
               className="bg-green-500 hover:bg-green-600 text-white rounded-full px-9 h-12 m-1 ring-offset-2 ring-1 ring-green-400 flex items-center transition-colors"
             >
               Get started

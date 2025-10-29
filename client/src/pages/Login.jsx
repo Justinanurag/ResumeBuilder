@@ -1,26 +1,44 @@
 import { Mail, User2Icon } from "lucide-react";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../app/features/authSlice";
+import toast from "react-hot-toast";
+import api from "../configs/api";
 
 const Login = () => {
-  const query=new URLSearchParams(window.location.search);
-  const urlState=query.get("state ")
-   const [state, setState] = React.useState(urlState||"login")
+  const dispatch = useDispatch();
+  const query = new URLSearchParams(window.location.search);
+  const urlState = query.get("state");
+  const [state, setState] = React.useState(urlState || "login");
 
-    const [formData, setFormData] = React.useState({
-        name: '',
-        email: '',
-        password: ''
-    })
+  const [formData, setFormData] = React.useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    try {
+      const endpoint = state === "login" ? "/api/users/login" : "/api/users/register";
+      const { data } = await api.post(endpoint, formData);
+      dispatch(login(data));
+
+      localStorage.setItem("token", data.token);
+
+      // ✅ Success toast
+      toast.success(state === "login" ? "Login successful!" : "Account created!");
+    } catch (error) {
+      console.error("Error during form submission:", error.message);
+      toast.error("Something went wrong. Please try again.");
     }
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <form
@@ -33,7 +51,7 @@ const Login = () => {
         <p className="text-gray-500 text-sm mt-2">Please {state} to continue</p>
         {state !== "login" && (
           <div className="flex items-center mt-6 w-full bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
-            <User2Icon size={16} color="#6B7280"/>
+            <User2Icon size={16} color="#6B7280" />
             <input
               type="text"
               name="name"
@@ -46,7 +64,7 @@ const Login = () => {
           </div>
         )}
         <div className="flex items-center w-full mt-4 bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
-          <Mail size={13} color="#6B7280"/>
+          <Mail size={13} color="#6B7280" />
           <input
             type="email"
             name="email"
