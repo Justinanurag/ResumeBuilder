@@ -1,12 +1,19 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux"
 
 const Navbar = () => {
-  const user = { name: "Anurag Tiwari" };
-  const navigate = useNavigate();
+  // const user = { name: "Anurag Tiwari" };
 
+  const user = useSelector(state=>state.auth);
+  // console.log(user)
+  const dispatch=useDispatch()
+  const navigate = useNavigate();
   const logoutUser = () => {
+    localStorage.removeItem("token")
+    localStorage.clear();
     navigate("/");
+    dispatch(logout())
   };
 
   return (
@@ -16,7 +23,7 @@ const Navbar = () => {
           <img src="/logo.svg" alt="logo" className="h-11 w-auto" />
         </Link>
         <div className="flex items-center gap-4 text-sm">
-          <p className="max-sm:hidden">Hi, {user?.name}</p>
+          <p className="max-sm:hidden">Hi, {user.user?.name}</p>
           <button
             onClick={logoutUser}
             className="bg-white hover:bg-slate-50 border border-gray-300 px-7 py-1.5 rounded-full active:scale-95 transition-all"
