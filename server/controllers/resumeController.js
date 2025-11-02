@@ -8,8 +8,6 @@ export const createResume = async (req, res) => {
     const userId = req.userId;
     const { title } = req.body;
 
-    console.log("ye backend se h ",userId,title)
-
     //create new resume
     const newResume = await Resume.create({ userId, title });
     //return success message
@@ -134,8 +132,12 @@ export const updateResume = async (req, res) => {
       });
     }
 
-    let resumeDataCopy = JSON.parse(resumeData);
-
+    let resumeDataCopy;
+    if(typeof resumeData==='string'){
+      resumeDataCopy=await JSON.parse(resumeData);
+    } else{
+      resumeDataCopy=structuredClone(resumeData);
+    }
     if (image) {
       const imageBufferData = fs.createReadStream(image.path);
       const transformation = [

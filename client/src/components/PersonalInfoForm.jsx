@@ -79,7 +79,7 @@ const PersonalInfoForm = ({
                 onChange={() => setRemoveBackground((prev) => !prev)}
               />
               <div className="w-11 h-6 bg-slate-300 rounded-full relative transition-colors duration-300 peer-checked:bg-green-600">
-                <span className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out peer-checked:translate-x-5"></span>
+                <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out ${removeBackground ? 'translate-x-5' : ''}`}></span>
               </div>
             </label>
           </div>

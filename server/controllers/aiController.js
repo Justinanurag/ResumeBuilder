@@ -7,6 +7,7 @@ import Resume from "../models/Resume.js";
 export const enhanceProfessionalSummary = async (req, res) => {
   try {
     const { userContent } = req.body;
+    // console.log(userContent);
 
     // ✅ Validate input
     if (!userContent || userContent.trim() === "") {
@@ -31,6 +32,8 @@ export const enhanceProfessionalSummary = async (req, res) => {
         },
       ],
     });
+
+    // console.log("ye response h:",response)
 
     const enhancedSummary = response.choices?.[0]?.message?.content?.trim();
 
@@ -57,7 +60,7 @@ export const enhanceProfessionalSummary = async (req, res) => {
 };
 
 //controller for enhancing a resume's job description
-//POST :/api/ai/enhance-pro-desc
+//POST :/api/ai/enhance-job-description
 export const enhanceJobDescription = async (req, res) => {
   try {
     const { userContent } = req.body;
