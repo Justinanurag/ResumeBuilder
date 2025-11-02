@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Zap } from "lucide-react";
 import Title from "./Title";
 
-const Features = () => {
+const Feature = () => {
   const [isHover, setIsHover] = useState(false);
 
   return (
@@ -138,4 +138,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default Feature;
