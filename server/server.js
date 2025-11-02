@@ -10,7 +10,7 @@ import aiRouter from "./routes/aiRouter.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000 ||"https://resume-builder-6bd8.vercel.app";
 
 // Middleware
 app.use(cors());
