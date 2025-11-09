@@ -29,6 +29,8 @@ import SkillsForms from "../components/SkillsForms";
 import { useSelector } from "react-redux";
 import api from "../configs/api";
 import toast from "react-hot-toast";
+import html2canvas from "html2canvas-pro";
+import jsPDF from "jspdf";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams();
@@ -51,6 +53,7 @@ const ResumeBuilder = () => {
 
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const [removeBackground, setRemoveBackground] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const sections = [
     { id: "personal", name: "Personal Info", icon: User },
@@ -145,8 +148,115 @@ const ResumeBuilder = () => {
       alert("Share not supported on this browser. ");
     }
   };
-  const downloadResume = () => {
-    window.print();
+  const downloadResume = async () => {
+    try {
+      setIsDownloading(true);
+      const resumeElement = document.getElementById("resume-preview");
+      
+      if (!resumeElement) {
+        toast.error("Resume preview not found");
+        setIsDownloading(false);
+        return;
+      }
+
+      // Show loading toast
+      const loadingToast = toast.loading("Generating PDF...");
+
+      // Wait a bit to ensure all content is rendered
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Get the resume element dimensions
+      const canvas = await html2canvas(resumeElement, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#ffffff",
+        width: resumeElement.scrollWidth,
+        height: resumeElement.scrollHeight,
+        onclone: (clonedDoc) => {
+          // Handle images in cloned document
+          const clonedElement = clonedDoc.getElementById("resume-preview");
+          if (clonedElement) {
+            const images = clonedElement.getElementsByTagName("img");
+            Array.from(images).forEach(img => {
+              if (!img.complete) {
+                img.style.display = "none";
+              }
+            });
+          }
+        },
+      });
+
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      
+      // A4 dimensions in mm
+      const pdfWidth = 210; // A4 width in mm
+      const pdfHeight = 297; // A4 height in mm
+      
+      // Calculate scaling to fit page width
+      const imgAspectRatio = imgWidth / imgHeight;
+      const scaledWidth = pdfWidth;
+      const scaledHeight = pdfWidth / imgAspectRatio;
+      
+      // Create PDF
+      const pdf = new jsPDF("p", "mm", "a4");
+      
+      // If content fits on one page
+      if (scaledHeight <= pdfHeight) {
+        pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, scaledWidth, scaledHeight);
+      } else {
+        // Split across multiple pages
+        const totalPages = Math.ceil(scaledHeight / pdfHeight);
+        
+        // Calculate pixel height per page
+        const pageHeightPx = Math.ceil(imgHeight / totalPages);
+        
+        for (let page = 0; page < totalPages; page++) {
+          if (page > 0) {
+            pdf.addPage();
+          }
+          
+          // Calculate the Y position and height for this page
+          const sourceY = page * pageHeightPx;
+          const sourceHeight = Math.min(pageHeightPx, imgHeight - sourceY);
+          const pageScaledHeight = (sourceHeight / imgHeight) * scaledHeight;
+          
+          // Create a canvas for this page's portion
+          const pageCanvas = document.createElement("canvas");
+          pageCanvas.width = imgWidth;
+          pageCanvas.height = sourceHeight;
+          const pageCtx = pageCanvas.getContext("2d");
+          
+          // Draw the cropped portion onto the page canvas
+          pageCtx.drawImage(
+            canvas,
+            0, sourceY, imgWidth, sourceHeight,
+            0, 0, imgWidth, sourceHeight
+          );
+          
+          // Add this page to PDF
+          const pageImgData = pageCanvas.toDataURL("image/png");
+          pdf.addImage(pageImgData, "PNG", 0, 0, scaledWidth, pageScaledHeight);
+        }
+      }
+
+      // Generate filename
+      const fileName = resumeData.title 
+        ? `${resumeData.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_resume.pdf`
+        : "resume.pdf";
+
+      // Save PDF
+      pdf.save(fileName);
+      
+      toast.dismiss(loadingToast);
+      toast.success("Resume downloaded successfully!");
+      setIsDownloading(false);
+    } catch (error) {
+      console.error("Error downloading resume:", error);
+      toast.error("Failed to download resume. Please try again.");
+      setIsDownloading(false);
+    }
   };
 
   const saveResume = async () => {
@@ -379,11 +489,14 @@ const ResumeBuilder = () => {
               {/* Download Button */}
               <button
                 onClick={downloadResume}
-                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-purple-600 
-      bg-purple-50 hover:bg-purple-100 rounded-lg shadow-sm transition-all duration-200"
+                disabled={isDownloading}
+                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium text-purple-600 
+      bg-purple-50 hover:bg-purple-100 rounded-lg shadow-sm transition-all duration-200 ${
+        isDownloading ? "opacity-50 cursor-not-allowed" : ""
+      }`}
               >
                 <DownloadIcon className="w-4 h-4" />
-                Download
+                {isDownloading ? "Downloading..." : "Download"}
               </button>
             </div>
 

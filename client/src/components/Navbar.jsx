@@ -1,19 +1,37 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   // const user = { name: "Anurag Tiwari" };
 
-  const user = useSelector(state=>state.auth);
+  const user = useSelector((state) => state.auth);
   // console.log(user)
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const logoutUser = () => {
-    localStorage.removeItem("token")
-    localStorage.clear();
-    navigate("/");
-    dispatch(logout())
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Logout",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("token");
+        localStorage.clear();
+        dispatch(logout());
+        navigate("/");
+
+        Swal.fire(
+          "Logged Out!",
+          "You have been logged out successfully.",
+          "success"
+        );
+      }
+    });
   };
 
   return (

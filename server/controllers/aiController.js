@@ -79,8 +79,12 @@ export const enhanceJobDescription = async (req, res) => {
       messages: [
         {
           role: "system",
-          content:
-            "You are an expert in resume and job description writing. Your task is to enhance a job description to make it more compelling, professional, and ATS-friendly. The output should clearly highlight key responsibilities, required skills, and impact — written in a natural and concise tone. Return only the improved job description text.",
+          content: `
+            You are an expert resume writer. Enhance job description for resume experience.
+            Output 4-6 bullet points only. ATS focused. Result driven. 
+            No job posting style, no headings, no company intro, no qualification requirements.
+            Return ONLY bullet points.
+          `,
         },
         {
           role: "user",
@@ -88,6 +92,8 @@ export const enhanceJobDescription = async (req, res) => {
         },
       ],
     });
+    // console.log("ye response h:",response)
+    
 
     const enhancedJobDescription =
       response.choices?.[0]?.message?.content?.trim();

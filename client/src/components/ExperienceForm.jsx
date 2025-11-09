@@ -12,7 +12,16 @@ const ExperienceForm = ({ data, onChange, setResumeData }) => {
     try {
       setGeneratingIndex(index);
       const experience = data[index];
-      const prompt = `Enhance this Job Description: ${experience.description} for the position of ${experience.position} at ${experience.company}`;
+      const prompt = `
+      Rewrite and enhance this ONLY as RESUME JOB DESCRIPTION bullets (NOT a JD job post).
+      Role: ${experience.position} at ${experience.company}.
+      Original description: ${experience.description}.
+      Make it concise, ATS friendly, impact driven, professional.
+      Return ONLY 4-6 bullet points. No heading, no intro, no location, no qualifications, no company summary.
+      Just final bullet points only (resume format).
+      `;
+      
+
       const response = await api.post(
         "/api/ai/enhance-job-description",
         { userContent: prompt },
