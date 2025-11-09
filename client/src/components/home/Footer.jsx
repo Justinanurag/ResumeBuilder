@@ -77,7 +77,7 @@ const Footer = () => {
             <div className="flex gap-4 justify-center">
               {[
                 {
-                  href: "https://dribbble.com/prebuiltui",
+                  href: "https://resume-builder-six-azure-62.vercel.app/",
                   icon: (
                     <circle cx="12" cy="12" r="10"></circle>
                   ),
@@ -88,7 +88,7 @@ const Footer = () => {
                   ],
                 },
                 {
-                  href: "https://www.linkedin.com/company/prebuiltui",
+                  href: "www.linkedin.com/in/anuragtiwari02",
                   paths: [
                     "M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z",
                     "M2 9h4v12H2z",
@@ -96,13 +96,13 @@ const Footer = () => {
                   ],
                 },
                 {
-                  href: "https://x.com/prebuiltui",
+                  href: "https://x.com/justinanurag0_2",
                   paths: [
                     "M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z",
                   ],
                 },
                 {
-                  href: "https://www.youtube.com/@prebuiltui",
+                  href: "https://www.youtube.com/watch?v=gGJhmiQ_kwY",
                   paths: [
                     "M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17",
                     "m10 15 5-3-5-3z",
