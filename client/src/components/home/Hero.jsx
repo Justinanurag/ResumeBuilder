@@ -17,7 +17,7 @@ const Hero = () => {
         {/* Navbar */}
         <nav className="z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-40 text-sm">
           <a href="https://resume-builder-six-azure-62.vercel.app/">
-          <img src="/logo.svg" alt="logo" className="h-11 w-auto" />
+            <img src="/logo.svg" alt="logo" className="h-11 w-auto" />
           </a>
 
           <div className="hidden md:flex items-center gap-8 transition duration-500 text-slate-800">
@@ -27,10 +27,7 @@ const Hero = () => {
             <a href="#features" className="hover:text-green-600 transition">
               Features
             </a>
-            <a
-              href="#testimonials"
-              className="hover:text-green-600 transition"
-            >
+            <a href="#testimonials" className="hover:text-green-600 transition">
               Testimonials
             </a>
             <a href="#contact" className="hover:text-green-600 transition">
@@ -168,13 +165,14 @@ const Hero = () => {
           </h1>
 
           <p className="max-w-md text-center text-base my-7">
-            Create,edit and download professional resume with AI-powered assistance.
+            Create,edit and download professional resume with AI-powered
+            assistance.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex items-center gap-4 ">
             <Link
-             to="/app"
+              to="/app"
               className="bg-green-500 hover:bg-green-600 text-white rounded-full px-9 h-12 m-1 ring-offset-2 ring-1 ring-green-400 flex items-center transition-colors"
             >
               Get started
@@ -212,7 +210,12 @@ const Hero = () => {
                 <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path>
                 <rect x="2" y="6" width="14" height="12" rx="2"></rect>
               </svg>
-              <span>Try demo</span>
+              <a
+                href="https://youtu.be/gGJhmiQ_kwY?si=k1WRCPaXJdvC71Iq"
+                target="_blank"
+              >
+                <span>Try demo</span>
+              </a>
             </button>
           </div>
 
