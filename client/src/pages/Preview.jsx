@@ -61,6 +61,7 @@ const Preview = () => {
           data={resumeData} 
           template={resumeData.template} 
           accentColor={resumeData.accent_color || resumeData.accentColor || '#3B82F6'} 
+          fontStyle={resumeData.font_style || 'roboto'}
           classes='py-4 bg-white' 
         />
       </div>

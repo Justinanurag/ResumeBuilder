@@ -7,6 +7,7 @@ const ResumeSchema = new mongoose.Schema(
     public: { type: Boolean, default: false },
     template: { type: String, default: "classic" },
     accent_color: { type: String, default: "#3B82F6" },
+    font_style: { type: String, default: "roboto" },
     professional_summary: { type: String, default: "" },
     skills: [{ type: String }],
     personal_info: {

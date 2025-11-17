@@ -21,6 +21,7 @@ import PersonalInfoForm from "../components/PersonalInfoForm";
 import ResumePreview from "../components/ResumePreview";
 import TemplateSelector from "../components/TemplateSelector";
 import ColorPicker from "../components/ColorPicker";
+import FontStyleSelector from "../components/FontStyleSelector";
 import ProfessionalSummaryForm from "../components/ProfessionalSummaryForm";
 import ExperienceForm from "../components/ExperienceForm";
 import EducationForm from "../components/EducationForm";
@@ -48,6 +49,7 @@ const ResumeBuilder = () => {
     skills: [],
     template: "classic",
     accent_color: "#3B82F6",
+    font_style: "roboto",
     public: false,
   });
 
@@ -353,6 +355,15 @@ const ResumeBuilder = () => {
                     }))
                   }
                 />
+                <FontStyleSelector
+                  selectedFont={resumeData.font_style || "roboto"}
+                  onChange={(fontStyle) =>
+                    setResumeData((prev) => ({
+                      ...prev,
+                      font_style: fontStyle,
+                    }))
+                  }
+                />
               </div>
 
               {/* Navigation Buttons */}
@@ -506,6 +517,7 @@ const ResumeBuilder = () => {
                 data={resumeData}
                 template={resumeData.template}
                 accentColor={resumeData.accent_color}
+                fontStyle={resumeData.font_style || "roboto"}
               />
             </div>
           </div>

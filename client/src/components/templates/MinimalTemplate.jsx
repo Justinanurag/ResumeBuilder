@@ -1,5 +1,12 @@
+const MinimalTemplate = ({ data, accentColor, fontFamily = "'Roboto', sans-serif" }) => {
 
-const MinimalTemplate = ({ data, accentColor }) => {
+    // URL Normalizer (fixes localhost issue)
+    const formatURL = (url) => {
+        if (!url) return "";
+        if (url.startsWith("http://") || url.startsWith("https://")) return url;
+        return "https://" + url;
+    };
+
     const formatDate = (dateStr) => {
         if (!dateStr) return "";
         const [year, month] = dateStr.split("-");
@@ -10,7 +17,8 @@ const MinimalTemplate = ({ data, accentColor }) => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-8 bg-white text-gray-900 font-light">
+        <div className="max-w-4xl mx-auto p-8 bg-white text-gray-900 font-light" style={{ fontFamily }} data-font-family={fontFamily}>
+
             {/* Header */}
             <header className="mb-10">
                 <h1 className="text-4xl font-thin mb-4 tracking-wide">
@@ -18,14 +26,33 @@ const MinimalTemplate = ({ data, accentColor }) => {
                 </h1>
 
                 <div className="flex flex-wrap gap-6 text-sm text-gray-600">
+
                     {data.personal_info?.email && <span>{data.personal_info.email}</span>}
                     {data.personal_info?.phone && <span>{data.personal_info.phone}</span>}
                     {data.personal_info?.location && <span>{data.personal_info.location}</span>}
+
+                    {/* CLICKABLE LINKEDIN */}
                     {data.personal_info?.linkedin && (
-                        <span className="break-all">{data.personal_info.linkedin}</span>
+                        <a
+                            href={formatURL(data.personal_info.linkedin)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="break-all cursor-pointer hover:underline"
+                        >
+                            {data.personal_info.linkedin}
+                        </a>
                     )}
+
+                    {/* CLICKABLE WEBSITE */}
                     {data.personal_info?.website && (
-                        <span className="break-all">{data.personal_info.website}</span>
+                        <a
+                            href={formatURL(data.personal_info.website)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="break-all cursor-pointer hover:underline"
+                        >
+                            {data.personal_info.website}
+                        </a>
                     )}
                 </div>
             </header>
@@ -33,7 +60,7 @@ const MinimalTemplate = ({ data, accentColor }) => {
             {/* Professional Summary */}
             {data.professional_summary && (
                 <section className="mb-10">
-                    <p className=" text-gray-700">
+                    <p className="text-gray-700">
                         {data.professional_summary}
                     </p>
                 </section>
@@ -42,7 +69,10 @@ const MinimalTemplate = ({ data, accentColor }) => {
             {/* Experience */}
             {data.experience && data.experience.length > 0 && (
                 <section className="mb-10">
-                    <h2 className="text-sm uppercase tracking-widest mb-6 font-medium" style={{ color: accentColor }}>
+                    <h2
+                        className="text-sm uppercase tracking-widest mb-6 font-medium"
+                        style={{ color: accentColor }}
+                    >
                         Experience
                     </h2>
 
@@ -70,14 +100,17 @@ const MinimalTemplate = ({ data, accentColor }) => {
             {/* Projects */}
             {data.project && data.project.length > 0 && (
                 <section className="mb-10">
-                    <h2 className="text-sm uppercase tracking-widest mb-6 font-medium" style={{ color: accentColor }}>
+                    <h2
+                        className="text-sm uppercase tracking-widest mb-6 font-medium"
+                        style={{ color: accentColor }}
+                    >
                         Projects
                     </h2>
 
                     <div className="space-y-4">
                         {data.project.map((proj, index) => (
                             <div key={index} className="flex flex-col gap-2 justify-between items-baseline">
-                                <h3 className="text-lg font-medium ">{proj.name}</h3>
+                                <h3 className="text-lg font-medium">{proj.name}</h3>
                                 <p className="text-gray-600">{proj.description}</p>
                             </div>
                         ))}
@@ -88,7 +121,10 @@ const MinimalTemplate = ({ data, accentColor }) => {
             {/* Education */}
             {data.education && data.education.length > 0 && (
                 <section className="mb-10">
-                    <h2 className="text-sm uppercase tracking-widest mb-6 font-medium" style={{ color: accentColor }}>
+                    <h2
+                        className="text-sm uppercase tracking-widest mb-6 font-medium"
+                        style={{ color: accentColor }}
+                    >
                         Education
                     </h2>
 
@@ -114,7 +150,10 @@ const MinimalTemplate = ({ data, accentColor }) => {
             {/* Skills */}
             {data.skills && data.skills.length > 0 && (
                 <section>
-                    <h2 className="text-sm uppercase tracking-widest mb-6 font-medium" style={{ color: accentColor }}>
+                    <h2
+                        className="text-sm uppercase tracking-widest mb-6 font-medium"
+                        style={{ color: accentColor }}
+                    >
                         Skills
                     </h2>
 
@@ -125,6 +164,6 @@ const MinimalTemplate = ({ data, accentColor }) => {
             )}
         </div>
     );
-}
+};
 
 export default MinimalTemplate;

@@ -4,13 +4,20 @@
     font-family: "Outfit", sans-serif;
   }
   @layer base{
+    html, body {
+      @apply bg-gray-50 dark:bg-gray-900 transition-colors duration-300;
+    }
     button{
       @apply cursor-pointer;
     }
     input:not([type="checkbox"]){
-      @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-l-lg;
+      @apply outline-none focus:ring border border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 rounded-l-lg;
     }
     textarea{
-       @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-l-lg;  
+       @apply outline-none focus:ring border border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 rounded-l-lg;  
     }
   }
+  ::-webkit-scrollbar{
+    display: none;
+}
+  

@@ -4,17 +4,36 @@ import MinimalTemplate from "./templates/MinimalTemplate";
 import MinimalImageTemplate from "./templates/MinimalImageTemplate";
 import ClassicTemplate from "./templates/ClassicTemplate";
 
-const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
+const ResumePreview = ({ data, template, accentColor, fontStyle = "roboto", classes = "" }) => {
+  // Get font family from font style ID
+  const getFontFamily = (fontId) => {
+    const fontMap = {
+      roboto: "'Roboto', sans-serif",
+      lato: "'Lato', sans-serif",
+      "open-sans": "'Open Sans', sans-serif",
+      playfair: "'Playfair Display', serif",
+      inter: "'Inter', sans-serif",
+    };
+    return fontMap[fontId] || fontMap.roboto;
+  };
+
+  const fontFamily = getFontFamily(fontStyle);
+
+  // Debug logging
+  if (process.env.NODE_ENV === "development") {
+    console.log("Font Style:", fontStyle, "Font Family:", fontFamily);
+  }
+
   const renderTemplate = () => {
     switch (template) {
       case "modern":
-        return <ModernTemplate data={data} accentColor={accentColor} />;
+        return <ModernTemplate data={data} accentColor={accentColor} fontFamily={fontFamily} />;
       case "minimal":
-        return <MinimalTemplate data={data} accentColor={accentColor} />;
+        return <MinimalTemplate data={data} accentColor={accentColor} fontFamily={fontFamily} />;
       case "minimal-image":
-        return <MinimalImageTemplate data={data} accentColor={accentColor} />;
+        return <MinimalImageTemplate data={data} accentColor={accentColor} fontFamily={fontFamily} />;
       default:
-        return <ClassicTemplate data={data} accentColor={accentColor} />;
+        return <ClassicTemplate data={data} accentColor={accentColor} fontFamily={fontFamily} />;
     }
   };
 
@@ -24,6 +43,10 @@ const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
   }
 
   const printStyles = `
+    #resume-preview * {
+      font-family: ${fontFamily} !important;
+    }
+    
     @page {
       size: letter;
       margin: 0;
@@ -46,6 +69,7 @@ const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
       #resume-preview,
       #resume-preview * {
         visibility: visible;
+        font-family: ${fontFamily} !important;
       }
 
       #resume-preview {
@@ -69,7 +93,7 @@ const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
       <div className="w-full bg-gray-100">
         <div
           id="resume-preview"
-          className={`border border-gray-200 print:shadow-none print:border-none ${classes}`}
+          className={`border border-gray-200 print:shadow-none print:border-none${classes}`}
         >
           {renderTemplate()}
         </div>

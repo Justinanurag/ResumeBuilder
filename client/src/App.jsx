@@ -10,6 +10,7 @@ import api from "./configs/api";
 import { login, setloading } from "./app/features/authSlice";
 import {Toaster} from 'react-hot-toast'
 import Login from "./pages/Login";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -43,18 +44,18 @@ const App = () => {
   }, []);
 
   return (
-    <>
-    <Toaster/>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="app" element={<Layout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="builder/:resumeId" element={<ResumeBuilder />} />
-      </Route>
-      <Route path="view/:resumeId" element={<Preview />} />
-      {/* <Route path="login" element={<Login />} /> */}
-    </Routes>
-    </>
+    <ThemeProvider>
+      <Toaster/>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="app" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="builder/:resumeId" element={<ResumeBuilder />} />
+        </Route>
+        <Route path="view/:resumeId" element={<Preview />} />
+        {/* <Route path="login" element={<Login />} /> */}
+      </Routes>
+    </ThemeProvider>
   );
 };
 

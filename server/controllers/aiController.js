@@ -4,6 +4,75 @@
 import openai from "../config/ai.js";
 import Resume from "../models/Resume.js";
 
+const ATS_SCORE_PROMPT = `
+You are an Applicant Tracking System (ATS) scoring engine. Compare the candidate's resume against the supplied job description.
+
+Return ONLY valid JSON following this exact shape:
+{
+  "score": 0,
+  "verdict": "",
+  "strengths": [],
+  "gaps": [],
+  "recommendations": [],
+  "keyword_alignment": [
+    { "keyword": "", "match": 0 }
+  ]
+}
+
+Rules:
+- "score" must be an integer between 0 and 100.
+- Populate at least 2 items for strengths, gaps, and recommendations when possible.
+- "keyword_alignment" should list up to 5 critical keywords with match percentages (0-100).
+- Keep the tone concise, professional, and action-oriented.
+`;
+
+const formatResumeForPrompt = (resume) => {
+  const summary = [
+    `Title: ${resume.title}`,
+    resume.professional_summary
+      ? `Summary: ${resume.professional_summary}`
+      : null,
+    resume.skills?.length ? `Skills: ${resume.skills.join(", ")}` : null,
+    resume.experience?.length
+      ? `Experience:\n${resume.experience
+          .filter(Boolean)
+          .map(
+            (exp, idx) =>
+              `${idx + 1}. ${exp.position || "Role"} at ${
+                exp.company || "Company"
+              } (${exp.start_date || "Start"} - ${exp.is_current ? "Present" : exp.end_date || "End"})\nImpact: ${
+                exp.description || "N/A"
+              }`
+          )
+          .join("\n")}`
+      : null,
+    resume.project?.length
+      ? `Projects:\n${resume.project
+          .filter(Boolean)
+          .map(
+            (proj, idx) =>
+              `${idx + 1}. ${proj.name || "Project"} - ${proj.type || ""}\nImpact: ${
+                proj.description || "N/A"
+              }`
+          )
+          .join("\n")}`
+      : null,
+    resume.education?.length
+      ? `Education:\n${resume.education
+          .filter(Boolean)
+          .map(
+            (edu, idx) =>
+              `${idx + 1}. ${edu.degree || "Degree"} in ${
+                edu.field || "Field"
+              } @ ${edu.institution || "Institution"} (${edu.graduation_date || "Year"})`
+          )
+          .join("\n")}`
+      : null,
+  ];
+
+  return summary.filter(Boolean).join("\n\n");
+};
+
 export const enhanceProfessionalSummary = async (req, res) => {
   try {
     const { userContent } = req.body;
@@ -241,6 +310,76 @@ Return the result strictly in this JSON structure (no text before or after it):
       success: false,
       message:
         error.message || "Something went wrong while uploading the resume.",
+    });
+  }
+};
+
+export const calculateAtsScore = async (req, res) => {
+  try {
+    const { resumeId, jobDescription } = req.body;
+    const userId = req.userId;
+
+    if (!resumeId || !jobDescription?.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "resumeId and jobDescription are required.",
+      });
+    }
+
+    const resume = await Resume.findOne({ _id: resumeId, userId });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found.",
+      });
+    }
+
+    const formattedResume = formatResumeForPrompt(resume);
+    const response = await openai.chat.completions.create({
+      model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: ATS_SCORE_PROMPT,
+        },
+        {
+          role: "user",
+          content: `JOB DESCRIPTION:\n${jobDescription.trim()}\n\nRESUME:\n${formattedResume}`,
+        },
+      ],
+    });
+
+    const content = response.choices?.[0]?.message?.content;
+
+    if (!content) {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to generate ATS score. Please try again.",
+      });
+    }
+
+    let parsedResult;
+    try {
+      parsedResult = JSON.parse(content);
+    } catch (error) {
+      console.error("ATS score parsing error:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Received invalid response from AI.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      result: parsedResult,
+    });
+  } catch (error) {
+    console.error("ATS score error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Unable to calculate ATS score.",
     });
   }
 };
