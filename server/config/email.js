@@ -1,9 +1,10 @@
 import nodemailer from "nodemailer";
 
+const getSmtpPort = () => Number(process.env.SMTP_PORT || 587);
+
 const isEmailConfigured = () =>
   Boolean(
     process.env.SMTP_HOST &&
-      process.env.SMTP_PORT &&
       process.env.SMTP_USER &&
       process.env.SMTP_PASS
   );
@@ -11,10 +12,12 @@ const isEmailConfigured = () =>
 const createTransporter = () => {
   if (!isEmailConfigured()) return null;
 
+  const port = getSmtpPort();
+
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: Number(process.env.SMTP_PORT) === 465,
+    port,
+    secure: port === 465,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
@@ -24,7 +27,7 @@ const createTransporter = () => {
 
 export const sendPasswordResetEmail = async ({ to, name, resetUrl }) => {
   const transporter = createTransporter();
-  const from = process.env.SMTP_FROM || process.env.SMTP_USER;
+  const from = process.env.SENDER_EMAIL || process.env.SMTP_FROM || process.env.SMTP_USER;
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto;">
