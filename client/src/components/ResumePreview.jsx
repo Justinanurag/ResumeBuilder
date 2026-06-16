@@ -3,26 +3,17 @@ import ModernTemplate from "./templates/ModernTemplate";
 import MinimalTemplate from "./templates/MinimalTemplate";
 import MinimalImageTemplate from "./templates/MinimalImageTemplate";
 import ClassicTemplate from "./templates/ClassicTemplate";
+import { getFontFamily } from "../utils/fonts";
 
-const ResumePreview = ({ data, template, accentColor, fontStyle = "roboto", classes = "" }) => {
-  // Get font family from font style ID
-  const getFontFamily = (fontId) => {
-    const fontMap = {
-      roboto: "'Roboto', sans-serif",
-      lato: "'Lato', sans-serif",
-      "open-sans": "'Open Sans', sans-serif",
-      playfair: "'Playfair Display', serif",
-      inter: "'Inter', sans-serif",
-    };
-    return fontMap[fontId] || fontMap.roboto;
-  };
-
+const ResumePreview = ({
+  data,
+  template,
+  accentColor,
+  fontStyle = "roboto",
+  classes = "",
+  pdfMode = false,
+}) => {
   const fontFamily = getFontFamily(fontStyle);
-
-  // Debug logging
-  if (process.env.NODE_ENV === "development") {
-    console.log("Font Style:", fontStyle, "Font Family:", fontFamily);
-  }
 
   const renderTemplate = () => {
     switch (template) {
@@ -36,11 +27,6 @@ const ResumePreview = ({ data, template, accentColor, fontStyle = "roboto", clas
         return <ClassicTemplate data={data} accentColor={accentColor} fontFamily={fontFamily} />;
     }
   };
-
-  // Debugging: log data changes in dev only
-  if (process.env.NODE_ENV === "development") {
-    console.log("Resume Data:", data);
-  }
 
   const printStyles = `
     #resume-preview * {
@@ -87,13 +73,20 @@ const ResumePreview = ({ data, template, accentColor, fontStyle = "roboto", clas
     }
   `;
 
+  const previewClasses = pdfMode
+    ? "bg-white shadow-lg mx-auto"
+    : `border border-gray-200 print:shadow-none print:border-none${classes}`;
+
+  const wrapperClasses = pdfMode ? "w-full" : "w-full bg-gray-100";
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: printStyles }} />
-      <div className="w-full bg-gray-100">
+      <div className={wrapperClasses}>
         <div
           id="resume-preview"
-          className={`border border-gray-200 print:shadow-none print:border-none${classes}`}
+          className={previewClasses}
+          style={pdfMode ? { width: "8.5in", minHeight: "11in" } : undefined}
         >
           {renderTemplate()}
         </div>

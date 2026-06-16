@@ -6,6 +6,7 @@ import ResumeBuilder from "./pages/ResumeBuilder";
 import Layout from "./pages/Layout";
 import Dashboard from "./pages/Dashboard";
 import Preview from "./pages/Preview";
+import DownloadPdf from "./pages/DownloadPdf";
 import api from "./configs/api";
 import { login, setloading } from "./app/features/authSlice";
 import {Toaster} from 'react-hot-toast'
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="builder/:resumeId" element={<ResumeBuilder />} />
         </Route>
         <Route path="view/:resumeId" element={<Preview />} />
+        <Route path="download/:resumeId" element={<DownloadPdf />} />
         {/* <Route path="login" element={<Login />} /> */}
       </Routes>
     </>

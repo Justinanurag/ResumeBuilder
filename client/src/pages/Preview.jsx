@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { dummyResumeData } from '../assets/assets';
 import ResumePreview from '../components/ResumePreview';
-import { ArrowLeftIcon, Loader } from 'lucide-react';
+import { ArrowLeftIcon, DownloadIcon, Loader } from 'lucide-react';
 import api from '../configs/api';
 
 const Preview = () => {
@@ -57,6 +57,15 @@ const Preview = () => {
   return (
     <div className='bg-slate-100 min-h-screen'>
       <div className='max-w-3xl mx-auto py-10'>
+        <div className='flex justify-end mb-4 px-2'>
+          <Link
+            to={`/download/${resumeId}?auto=1`}
+            className='inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-purple-600 bg-white hover:bg-purple-50 border border-purple-200 rounded-lg shadow-sm transition-all'
+          >
+            <DownloadIcon className='w-4 h-4' />
+            Download PDF
+          </Link>
+        </div>
         <ResumePreview 
           data={resumeData} 
           template={resumeData.template} 
