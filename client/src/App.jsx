@@ -11,6 +11,8 @@ import api from "./configs/api";
 import { login, setloading } from "./app/features/authSlice";
 import {Toaster} from 'react-hot-toast'
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 const App = () => {
   const dispatch = useDispatch();
   const getUserData = async () => {
@@ -53,6 +55,8 @@ const App = () => {
         </Route>
         <Route path="view/:resumeId" element={<Preview />} />
         <Route path="download/:resumeId" element={<DownloadPdf />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password" element={<ResetPassword />} />
         {/* <Route path="login" element={<Login />} /> */}
       </Routes>
     </>

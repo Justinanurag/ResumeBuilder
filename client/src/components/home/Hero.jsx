@@ -233,6 +233,7 @@ const Hero = () => {
                 <span className="text-sm font-medium">{logo.name}</span>
               </div>
             ))}
+            
           </div>
         </div>
       </div>

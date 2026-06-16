@@ -1,5 +1,6 @@
 import { Mail, User2Icon } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../app/features/authSlice";
 import toast from "react-hot-toast";
@@ -31,7 +32,10 @@ const Login = () => {
       toast.success(state === "login" ? "Login successful!" : "Account created!");
     } catch (error) {
       console.error("Error during form submission:", error.message);
-      toast.error("Something went wrong. Please try again.");
+      toast.error(
+        error?.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
     }
   };
 
@@ -101,11 +105,13 @@ const Login = () => {
             required
           />
         </div>
-        <div className="mt-4 text-left text-green-500">
-          <button className="text-sm" type="reset">
-            Forget password?
-          </button>
-        </div>
+        {state === "login" && (
+          <div className="mt-4 text-left text-green-500">
+            <Link to="/forgot-password" className="text-sm hover:underline">
+              Forgot password?
+            </Link>
+          </div>
+        )}
         <button
           type="submit"
           className="mt-2 w-full h-11 rounded-full text-white bg-green-500 hover:opacity-90 transition-opacity"
