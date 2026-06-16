@@ -122,7 +122,7 @@ const hashResetToken = (token) =>
   crypto.createHash("sha256").update(token).digest("hex");
 
 const getFrontendUrl = () =>
-  process.env.FRONTEND_URL || "http://localhost:5173";
+  process.env.FRONTEND_URL || "https://resume-builder-six-azure-62.vercel.app"||"http://localhost:5173";
 
 // POST: /api/users/forgot-password
 export const forgotPassword = async (req, res) => {
