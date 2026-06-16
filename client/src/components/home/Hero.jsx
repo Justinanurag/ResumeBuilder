@@ -5,20 +5,20 @@ const Hero = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const logos = [
-    "https://saasly.prebuiltui.com/assets/companies-logo/instagram.svg",
-    "https://saasly.prebuiltui.com/assets/companies-logo/framer.svg",
-    "https://saasly.prebuiltui.com/assets/companies-logo/microsoft.svg",
-    "https://saasly.prebuiltui.com/assets/companies-logo/huawei.svg",
-    "https://saasly.prebuiltui.com/assets/companies-logo/walmart.svg",
+    { src: "/logos/instagram.svg", name: "Instagram" },
+    { src: "/logos/framer.svg", name: "Framer" },
+    { src: "/logos/microsoft.svg", name: "Microsoft" },
+    { src: "/logos/huawei.svg", name: "Huawei" },
+    { src: "/logos/google.svg", name: "Google" },
   ];
   return (
     <>
       <div className="min-h-screen pb-20">
         {/* Navbar */}
         <nav className="z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-40 text-sm">
-          <a href="https://resume-builder-six-azure-62.vercel.app/">
-            <img src="/logo.svg" alt="logo" className="h-11 w-auto" />
-          </a>
+          <Link to="/">
+            <img src="/logo.svg" alt="Resume Builder" className="h-11 w-auto" />
+          </Link>
 
           <div className="hidden md:flex items-center gap-8 transition duration-500 text-slate-800">
             <a href="#" className="hover:text-green-600 transition">
@@ -158,7 +158,6 @@ const Hero = () => {
           {/* Headline + CTA */}
           <h1 className="text-5xl md:text-6xl font-semibold max-w-5xl text-center mt-4 md:leading-[70px]">
             Land your dream job with{" "}
-            
             <span className=" bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent text-nowrap">
               AI-powered{" "}
             </span>{" "}
@@ -221,20 +220,18 @@ const Hero = () => {
           </div>
 
           <p className="py-6 text-slate-600 mt-14">
-            Trusting by leading brands, including
+            Trusted by leading brands, including
           </p>
 
           <div
-            className="flex flex-wrap justify-between max-sm:justify-center gap-6 max-w-3xl w-full mx-auto py-4"
+            className="flex flex-wrap justify-center gap-18 max-w-3xl w-full mx-auto py-4"
             id="logo-container"
           >
-            {logos.map((logo, index) => (
-              <img
-                key={index}
-                src={logo}
-                alt="logo"
-                className="h-6 w-auto max-w-xs"
-              />
+            {logos.map((logo) => (
+              <div key={logo.name} className="flex items-center gap-2">
+                <img src={logo.src} alt={logo.name} className="h-6 w-auto" />
+                <span className="text-sm font-medium">{logo.name}</span>
+              </div>
             ))}
           </div>
         </div>
